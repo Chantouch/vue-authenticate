@@ -1,8 +1,8 @@
 import './utils.js'
-import VueAuthenticate from './authenticate.js'
+import VueAuth from './authenticate.js'
 
 /**
- * VueAuthenticate plugin
+ * VueAuth plugin
  * @param {Object} Vue
  * @param {Object} options
  */
@@ -18,7 +18,7 @@ function plugin(Vue, options) {
           if (!this.$http) {
             throw new Error('Request handler instance not found')
           }
-          vueAuthInstance = new VueAuthenticate(this.$http, options)
+          vueAuthInstance = new VueAuth(this.$http, options)
         }
         return vueAuthInstance
       }
@@ -30,10 +30,10 @@ function plugin(Vue, options) {
  * External factory helper for ES5 and CommonJS
  * @param  {Object} $http     Instance of request handling library
  * @param  {Object} options   Configuration object
- * @return {VueAuthenticate}  VueAuthenticate instance
+ * @return {VueAuth}  VueAuth instance
  */
 plugin.factory = function ($http, options) {
-  return new VueAuthenticate($http, options)
+  return new VueAuth($http, options)
 }
 
 export default plugin

@@ -60,8 +60,8 @@ export default class VueAuthenticate {
 
   /**
    * Check if user is authenticated
-   * @author Sahat Yalkabov <https://github.com/sahat>
-   * @copyright Method taken from https://github.com/sahat/satellizer
+   * @author Sek Chantouch <https://github.com/Chnatouch>
+   * @copyright Method taken from https://github.com/Chantouch/satellizer
    * @return {Boolean}
    */
   isAuthenticated () {
