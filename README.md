@@ -1,12 +1,8 @@
 [**WARNING**]: README file is currently in process of rewrite and will be released soon.
 
-# vue-authenticate
+# vue-auth
 
-[![Join the chat at https://gitter.im/vuejs-auth/vue-authenticate](https://badges.gitter.im/vue-authenticate/Lobby.svg)](https://gitter.im/vuejs-auth/vue-authenticate?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-**vue-authenticate** is easily configurable solution for [Vue.js](https://vuejs.org/) that provides local login/registration as well as Social login using Github, Facebook, Google and other OAuth providers.
-
-
+**vue-auth** is easily configurable solution for [Vue.js](https://vuejs.org/) that provides local login/registration as well as Social login using Github, Facebook, Google and other OAuth providers.
 
 The best part about this library is that it is not strictly coupled to one request handling library like [vue-axios](https://github.com/imcvampire/vue-axios). You will be able to use it with different libraries. 
 
@@ -18,25 +14,25 @@ This library was inspired by well known authentication library for Angular calle
 
 ## Supported OAuth providers and configurations
 
-1. Facebook (https://github.com/dgrubelic/vue-authenticate/blob/master/src/options.js#L21)
-2. Google (https://github.com/dgrubelic/vue-authenticate/blob/master/src/options.js#L34)
-3. Github (https://github.com/dgrubelic/vue-authenticate/blob/master/src/options.js#L49)
-4. Instagram (https://github.com/dgrubelic/vue-authenticate/blob/master/src/options.js#L61)
-5. Twitter (https://github.com/dgrubelic/vue-authenticate/blob/master/src/options.js#L72)
-6. Bitbucket (https://github.com/dgrubelic/vue-authenticate/blob/master/src/options.js#L81)
-7. LinkedIn (https://github.com/dgrubelic/vue-authenticate/blob/master/src/options.js#L93)
-8. Microsoft Live (https://github.com/dgrubelic/vue-authenticate/blob/master/src/options.js#L106)
+1. Facebook (https://github.com/Chantouch/vue-auth/blob/master/src/options.js#L21)
+2. Google (https://github.com/Chantouch/vue-auth/blob/master/src/options.js#L34)
+3. Github (https://github.com/Chantouch/vue-auth/blob/master/src/options.js#L49)
+4. Instagram (https://github.com/Chantouch/vue-auth/blob/master/src/options.js#L61)
+5. Twitter (https://github.com/Chantouch/vue-auth/blob/master/src/options.js#L72)
+6. Bitbucket (https://github.com/Chantouch/vue-auth/blob/master/src/options.js#L81)
+7. LinkedIn (https://github.com/Chantouch/vue-auth/blob/master/src/options.js#L93)
+8. Microsoft Live (https://github.com/Chantouch/vue-auth/blob/master/src/options.js#L106)
 
 ## Installation
 ```bash
-npm install vue-authenticate
+npm install vue-auth
 ```
 
 ## Usage
 ```javascript
 import Vue from 'vue'
 import VueAxios from 'vue-axios'
-import VueAuthenticate from 'vue-authenticate'
+import VueAuthenticate from 'vue-auth'
 import axios from 'axios';
 
 Vue.use(VueAxios, axios)
@@ -81,8 +77,8 @@ new Vue({
 ```javascript
 new Vue({
   methods: {
-    authenticate: function (provider) {
-      this.$auth.authenticate(provider).then(function () {
+    auth: function (provider) {
+      this.$auth.auth(provider).then(function () {
         // Execute application logic after successful social authentication
       })
     }
@@ -91,10 +87,10 @@ new Vue({
 ```
 
 ```html
-<button @click="authenticate('github')">auth Github</button>
-<button @click="authenticate('facebook')">auth Facebook</button>
-<button @click="authenticate('google')">auth Google</button>
-<button @click="authenticate('twitter')">auth Twitter</button>
+<button @click="auth('github')">auth Github</button>
+<button @click="auth('facebook')">auth Facebook</button>
+<button @click="auth('google')">auth Google</button>
+<button @click="auth('twitter')">auth Twitter</button>
 ```
 
 ### Vuex authentication
@@ -106,7 +102,7 @@ new Vue({
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueAxios from 'vue-axios'
-import { VueAuthenticate } from 'vue-authenticate'
+import { VueAuthenticate } from 'vue-auth'
 import axios from 'axios';
 
 Vue.use(Vuex)
@@ -122,7 +118,7 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 var Vue = require('vue')
 var Vuex = require('vuex')
 var VueAxios = require('vue-axios')
-var VueAuthenticate = require('vue-authenticate')
+var VueAuthenticate = require('vue-auth')
 var axios = require('axios');
 
 Vue.use(Vuex)
@@ -237,7 +233,7 @@ Vue.use(VueAuthenticate, {
 
 The MIT License (MIT)
 
-Copyright (c) 2017 Davor Grubelić
+Copyright (c) 2017 Chantouch Sek
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
