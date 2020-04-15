@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 // app.use(allowCrossDomain);
 
 app.get('/', function (req, res) {
-  res.send('vue-authenticate')
+  res.send('vue-auths')
 })
 
 app.post('/auth/:provider', function(req, res){

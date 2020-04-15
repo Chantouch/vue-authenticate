@@ -1,6 +1,6 @@
 /*!
- * vue-auth v0.0.1
- * https://github.com/Chantouch/vue-auth
+ * vue-auths v0.0.1
+ * https://github.com/Chantouch/vue-auths
  * Released under the MIT License.
  */
 
