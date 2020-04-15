@@ -1,15 +1,15 @@
 {
-  "name": "vue-auths",
+  "name": "vue-auth",
   "version": "0.0.1",
   "description": "Authentication library for Vue.js",
-  "main": "dist/vue-auths.min.js",
-  "module": "dist/vue-auths.es2015.js",
-  "unpkg": "dist/vue-auths.js",
+  "main": "dist/vue-auth.min.js",
+  "module": "dist/vue-auth.es2015.js",
+  "unpkg": "dist/vue-auth.js",
   "scripts": {
     "dev": "concurrently --kill-others \"node-dev ./example/server.js\" \"gulp dev\"",
-    "build": "node build/build.js && cp ./dist/vue-auths.js ./example/"
+    "build": "node build/build.js && cp ./dist/vue-auth.js ./example/"
   },
-  "keywords": ["vue", "vue.js", "vuejs", "json", "jwt", "token", "auths", "authentication", "auths", "oauth1", "oauth2"],
+  "keywords": ["vue", "vue.js", "vuejs", "json", "jwt", "token", "auth", "authentication", "oauth", "oauth1", "oauth2"],
   "author": {
     "name": "Sek Chantouch",
     "email": "chantouchsek.cs83@gmail.com",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Chantouch/vue-auths.git"
+    "url": "https://github.com/Chantouch/vue-auth.git"
   },
   "files": ["dist"],
   "license": "MIT",
@@ -61,7 +61,6 @@
   },
   "tags": [
     "auth",
-    "oauth",
     "authentication",
     "login",
     "registration",

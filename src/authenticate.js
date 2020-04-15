@@ -14,7 +14,7 @@ import StorageFactory from './storage.js'
 import OAuth1 from './oauth/oauth1.js'
 import OAuth2 from './oauth/oauth2.js'
 
-export default class VueAuthenticate {
+export default class VueAuth {
   constructor ($http, overrideOptions) {
     let options = objectExtend({}, defaultOptions)
     options = objectExtend(options, overrideOptions)

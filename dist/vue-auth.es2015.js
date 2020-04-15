@@ -1,6 +1,6 @@
 /*!
- * vue-auths v0.0.1
- * https://github.com/Chantouch/vue-auths
+ * vue-auth v0.0.1
+ * https://github.com/Chantouch/vue-auth
  * Released under the MIT License.
  */
 
@@ -1210,7 +1210,7 @@ OAuth2.prototype._stringifyRequestParams = function _stringifyRequestParams () {
   }).join('&')
 };
 
-var VueAuthenticate = function VueAuthenticate ($http, overrideOptions) {
+var VueAuth = function VueAuth ($http, overrideOptions) {
   var options = objectExtend({}, defaultOptions);
   options = objectExtend(options, overrideOptions);
   var storage = StorageFactory(options);
@@ -1259,7 +1259,7 @@ var VueAuthenticate = function VueAuthenticate ($http, overrideOptions) {
  * @copyright Method taken from https://github.com/Chantouch/satellizer
  * @return {Boolean}
  */
-VueAuthenticate.prototype.isAuthenticated = function isAuthenticated () {
+VueAuth.prototype.isAuthenticated = function isAuthenticated () {
   var token = this.storage.getItem(this.tokenName);
 
   if (token) {// Token is present
@@ -1284,7 +1284,7 @@ VueAuthenticate.prototype.isAuthenticated = function isAuthenticated () {
  * Get token if user is authenticated
  * @return {String} Authentication token
  */
-VueAuthenticate.prototype.getToken = function getToken () {
+VueAuth.prototype.getToken = function getToken () {
   return this.storage.getItem(this.tokenName)
 };
 
@@ -1293,7 +1293,7 @@ VueAuthenticate.prototype.getToken = function getToken () {
  * @param response
  * @param tokenPath
  */
-VueAuthenticate.prototype.setToken = function setToken (response, tokenPath) {
+VueAuth.prototype.setToken = function setToken (response, tokenPath) {
   if (response[this.options.responseDataKey]) {
     response = response[this.options.responseDataKey];
   }
@@ -1306,7 +1306,7 @@ VueAuthenticate.prototype.setToken = function setToken (response, tokenPath) {
   }
 };
 
-VueAuthenticate.prototype.getPayload = function getPayload () {
+VueAuth.prototype.getPayload = function getPayload () {
   var token = this.storage.getItem(this.tokenName);
 
   if (token && token.split('.').length === 3) {
@@ -1325,7 +1325,7 @@ VueAuthenticate.prototype.getPayload = function getPayload () {
  * @param{Object} requestOptions Request options
  * @return {Promise}             Request promise
  */
-VueAuthenticate.prototype.login = function login (user, requestOptions) {
+VueAuth.prototype.login = function login (user, requestOptions) {
     var this$1 = this;
 
   requestOptions = requestOptions || {};
@@ -1346,7 +1346,7 @@ VueAuthenticate.prototype.login = function login (user, requestOptions) {
  * @param{Object} requestOptions Request options
  * @return {Promise}             Request promise
  */
-VueAuthenticate.prototype.register = function register (user, requestOptions) {
+VueAuth.prototype.register = function register (user, requestOptions) {
     var this$1 = this;
 
   requestOptions = requestOptions || {};
@@ -1366,7 +1366,7 @@ VueAuthenticate.prototype.register = function register (user, requestOptions) {
  * @param{Object} requestOptionsLogout request options object
  * @return {Promise}              Request promise
  */
-VueAuthenticate.prototype.logout = function logout (requestOptions) {
+VueAuth.prototype.logout = function logout (requestOptions) {
     var this$1 = this;
 
   if (!this.isAuthenticated()) {
@@ -1397,7 +1397,7 @@ VueAuthenticate.prototype.logout = function logout (requestOptions) {
  * @param{Object} userData     User data
  * @return {Promise}             Request promise
  */
-VueAuthenticate.prototype.authenticate = function authenticate (provider, userData) {
+VueAuth.prototype.authenticate = function authenticate (provider, userData) {
     var this$1 = this;
 
   return new Promise$1(function (resolve, reject) {
@@ -1437,7 +1437,7 @@ VueAuthenticate.prototype.authenticate = function authenticate (provider, userDa
  * @param{Object} userData     User data
  * @return {Promise}             Request promise
  */
-VueAuthenticate.prototype.link = function link (provider, userData) {
+VueAuth.prototype.link = function link (provider, userData) {
     var this$1 = this;
 
   return new Promise$1(function (resolve, reject) {
@@ -1485,7 +1485,7 @@ function plugin(Vue, options) {
           if (!this.$http) {
             throw new Error('Request handler instance not found')
           }
-          vueAuthInstance = new VueAuthenticate(this.$http, options);
+          vueAuthInstance = new VueAuth(this.$http, options);
         }
         return vueAuthInstance
       }
@@ -1500,7 +1500,7 @@ function plugin(Vue, options) {
  * @return {VueAuth}  VueAuth instance
  */
 plugin.factory = function ($http, options) {
-  return new VueAuthenticate($http, options)
+  return new VueAuth($http, options)
 };
 
 export default plugin;

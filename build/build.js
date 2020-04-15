@@ -5,8 +5,8 @@ var buble = require('rollup-plugin-buble');
 var package = require('../package.json');
 var banner =
     "/*!\n" +
-    " * vue-auths v" + package.version + "\n" +
-    " * https://github.com/Chantouch/vue-auths\n" +
+    " * vue-auth v" + package.version + "\n" +
+    " * https://github.com/Chantouch/vue-auth\n" +
     " * Released under the MIT License.\n" +
     " */\n";
 
@@ -15,26 +15,26 @@ rollup.rollup({
   plugins: [buble()]
 })
 .then(function (bundle) {
-  return write('dist/vue-auths.js', bundle.generate({
+  return write('dist/vue-auth.js', bundle.generate({
     format: 'umd',
     banner: banner,
     moduleName: 'VueAuth'
   }).code, bundle);
 })
 .then(function (bundle) {
-  return write('dist/vue-auths.min.js',
-    banner + '\n' + uglify.minify('dist/vue-auths.js').code,
+  return write('dist/vue-auth.min.js',
+    banner + '\n' + uglify.minify('dist/vue-auth.js').code,
   bundle);
 })
 .then(function (bundle) {
-  return write('dist/vue-auths.es2015.js', bundle.generate({
+  return write('dist/vue-auth.es2015.js', bundle.generate({
     format: 'es',
     banner: banner,
     footer: 'export { VueAuth };'
   }).code, bundle);
 })
 .then(function (bundle) {
-  return write('dist/vue-auths.common.js', bundle.generate({
+  return write('dist/vue-auth.common.js', bundle.generate({
     format: 'cjs',
     banner: banner
   }).code, bundle);
