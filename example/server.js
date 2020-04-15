@@ -262,7 +262,7 @@ function liveAuth(req, res) {
   })
 }
 
-oauthService = new OAuth.OAuth(
+const oauthService = new OAuth.OAuth(
   'https://api.twitter.com/oauth/request_token',
   'https://api.twitter.com/oauth/access_token',
   config.auth.twitter.clientId,
@@ -302,7 +302,7 @@ function twitterAuth(req, res) {
 
         var signature = oauthSignature.generate('GET', verifyCredentialsUrl, parameters, config.auth.twitter.clientSecret, oauthAccessTokenSecret)
 
-        Axios.get('https://api.twitter.com/1.1/account/verify_credentials.json', { 
+        Axios.get('https://api.twitter.com/1.1/account/verify_credentials.json', {
           headers: {
             Authorization:  'OAuth ' +
               'oauth_consumer_key="' + config.auth.twitter.clientId + '",' +

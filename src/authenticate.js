@@ -2,8 +2,12 @@ import Promise from './promise.js'
 import { $window } from './globals.js';
 import {
   objectExtend,
-  isString, isObject, isFunction,
-  joinUrl, decodeBase64, getObjectProperty,
+  isString,
+  isObject,
+  isFunction,
+  joinUrl,
+  decodeBase64,
+  getObjectProperty,
 } from './utils.js'
 import defaultOptions from './options.js'
 import StorageFactory from './storage.js'
@@ -11,32 +15,32 @@ import OAuth1 from './oauth/oauth1.js'
 import OAuth2 from './oauth/oauth2.js'
 
 export default class VueAuthenticate {
-  constructor($http, overrideOptions) {
+  constructor ($http, overrideOptions) {
     let options = objectExtend({}, defaultOptions)
     options = objectExtend(options, overrideOptions)
     let storage = StorageFactory(options)
 
     Object.defineProperties(this, {
       $http: {
-        get() {
+        get () {
           return $http
         }
       },
 
       options: {
-        get() {
+        get () {
           return options
         }
       },
 
       storage: {
-        get() {
+        get () {
           return storage
         }
       },
 
       tokenName: {
-        get() {
+        get () {
           if (this.options.tokenPrefix) {
             return [this.options.tokenPrefix, this.options.tokenName].join('_')
           } else {
@@ -60,7 +64,7 @@ export default class VueAuthenticate {
    * @copyright Method taken from https://github.com/sahat/satellizer
    * @return {Boolean}
    */
-  isAuthenticated() {
+  isAuthenticated () {
     let token = this.storage.getItem(this.tokenName)
 
     if (token) {  // Token is present
@@ -85,19 +89,20 @@ export default class VueAuthenticate {
    * Get token if user is authenticated
    * @return {String} Authentication token
    */
-  getToken() {
+  getToken () {
     return this.storage.getItem(this.tokenName)
   }
 
   /**
    * Set new authentication token
-   * @param {String|Object} token
+   * @param response
+   * @param tokenPath
    */
-  setToken(response, tokenPath) {
+  setToken (response, tokenPath) {
     if (response[this.options.responseDataKey]) {
       response = response[this.options.responseDataKey]
     }
-    
+
     const responseTokenPath = tokenPath || this.options.tokenPath
     const token = getObjectProperty(response, responseTokenPath)
 
@@ -106,7 +111,7 @@ export default class VueAuthenticate {
     }
   }
 
-  getPayload() {
+  getPayload () {
     const token = this.storage.getItem(this.tokenName)
 
     if (token && token.split('.').length === 3) {
@@ -114,18 +119,19 @@ export default class VueAuthenticate {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace('-', '+').replace('_', '/')
         return JSON.parse(decodeBase64(base64));
-      } catch (e) {}
+      } catch (e) {
+      }
     }
   }
-  
+
   /**
    * Login user using email and password
    * @param  {Object} user           User data
    * @param  {Object} requestOptions Request options
    * @return {Promise}               Request promise
    */
-  login(user, requestOptions) {
-    requestOptions = requestOptions || {}
+  login (user, requestOptions) {
+    requestOptions = requestOptions || {}
     requestOptions.url = requestOptions.url ? requestOptions.url : joinUrl(this.options.baseUrl, this.options.loginUrl)
     requestOptions[this.options.requestDataKey] = user || requestOptions[this.options.requestDataKey]
     requestOptions.method = requestOptions.method || 'POST'
@@ -143,8 +149,8 @@ export default class VueAuthenticate {
    * @param  {Object} requestOptions Request options
    * @return {Promise}               Request promise
    */
-  register(user, requestOptions) {
-    requestOptions = requestOptions || {}
+  register (user, requestOptions) {
+    requestOptions = requestOptions || {}
     requestOptions.url = requestOptions.url ? requestOptions.url : joinUrl(this.options.baseUrl, this.options.registerUrl)
     requestOptions[this.options.requestDataKey] = user || requestOptions[this.options.requestDataKey]
     requestOptions.method = requestOptions.method || 'POST'
@@ -161,7 +167,7 @@ export default class VueAuthenticate {
    * @param  {Object} requestOptions  Logout request options object
    * @return {Promise}                Request promise
    */
-  logout(requestOptions) {
+  logout (requestOptions) {
     if (!this.isAuthenticated()) {
       return Promise.reject(new Error('There is no currently authenticated user'))
     }
@@ -185,12 +191,12 @@ export default class VueAuthenticate {
 
   /**
    * Authenticate user using authentication provider
-   * 
+   *
    * @param  {String} provider       Provider name
    * @param  {Object} userData       User data
    * @return {Promise}               Request promise
    */
-  authenticate(provider, userData) {
+  authenticate (provider, userData) {
     return new Promise((resolve, reject) => {
       var providerConfig = this.options.providers[provider]
       if (!providerConfig) {
@@ -222,13 +228,13 @@ export default class VueAuthenticate {
   }
 
   /**
-  * Link user using authentication provider without login
-  *
-  * @param  {String} provider       Provider name
-  * @param  {Object} userData       User data
-  * @return {Promise}               Request promise
-  */
-  link(provider, userData) {
+   * Link user using authentication provider without login
+   *
+   * @param  {String} provider       Provider name
+   * @param  {Object} userData       User data
+   * @return {Promise}               Request promise
+   */
+  link (provider, userData) {
     return new Promise((resolve, reject) => {
       var providerConfig = this.options.providers[provider]
       if (!providerConfig) {

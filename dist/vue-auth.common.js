@@ -1,14 +1,10 @@
 /*!
- * vue-authenticate v1.4.1
- * https://github.com/dgrubelic/vue-authenticate
+ * vue-auth v0.0.1
+ * https://github.com/Chantouch/vue-auth
  * Released under the MIT License.
  */
 
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.VueAuthenticate = factory());
-}(this, (function () { 'use strict';
+'use strict';
 
 if (typeof Object.assign != 'function') {
   Object.assign = function(target, varArgs) {
@@ -978,7 +974,7 @@ var OAuth = function OAuth($http, storage, providerConfig, options) {
 };
 
 /**
- * Initialize OAuth1 process 
+ * Initialize OAuth1 process
  * @param{Object} userData User data
  * @return {Promise}
  */
@@ -1022,9 +1018,7 @@ OAuth.prototype.getRequestToken = function getRequestToken () {
  * @return {Promise}
  */
 OAuth.prototype.openPopup = function openPopup (response) {
-  var url = [this.providerConfig.authorizationEndpoint, this.buildQueryString(response[this.options.responseDataKey])].join('?');
-
-  this.oauthPopup.popup.location = url;
+  this.oauthPopup.popup.location = [this.providerConfig.authorizationEndpoint, this.buildQueryString(response[this.options.responseDataKey])].join('?');
   if ($window['cordova']) {
     return this.oauthPopup.open(this.providerConfig.redirectUri)
   } else {
@@ -1218,32 +1212,32 @@ OAuth2.prototype._stringifyRequestParams = function _stringifyRequestParams () {
   }).join('&')
 };
 
-var VueAuthenticate = function VueAuthenticate($http, overrideOptions) {
+var VueAuthenticate = function VueAuthenticate ($http, overrideOptions) {
   var options = objectExtend({}, defaultOptions);
   options = objectExtend(options, overrideOptions);
   var storage = StorageFactory(options);
 
   Object.defineProperties(this, {
     $http: {
-      get: function get() {
+      get: function get () {
         return $http
       }
     },
 
     options: {
-      get: function get() {
+      get: function get () {
         return options
       }
     },
 
     storage: {
-      get: function get() {
+      get: function get () {
         return storage
       }
     },
 
     tokenName: {
-      get: function get() {
+      get: function get () {
         if (this.options.tokenPrefix) {
           return [this.options.tokenPrefix, this.options.tokenName].join('_')
         } else {
@@ -1298,13 +1292,14 @@ VueAuthenticate.prototype.getToken = function getToken () {
 
 /**
  * Set new authentication token
- * @param {String|Object} token
+ * @param response
+ * @param tokenPath
  */
 VueAuthenticate.prototype.setToken = function setToken (response, tokenPath) {
   if (response[this.options.responseDataKey]) {
     response = response[this.options.responseDataKey];
   }
-    
+
   var responseTokenPath = tokenPath || this.options.tokenPath;
   var token = getObjectProperty(response, responseTokenPath);
 
@@ -1321,10 +1316,11 @@ VueAuthenticate.prototype.getPayload = function getPayload () {
       var base64Url = token.split('.')[1];
       var base64 = base64Url.replace('-', '+').replace('_', '/');
       return JSON.parse(decodeBase64(base64));
-    } catch (e) {}
+    } catch (e) {
+    }
   }
 };
-  
+
 /**
  * Login user using email and password
  * @param{Object} user         User data
@@ -1334,7 +1330,7 @@ VueAuthenticate.prototype.getPayload = function getPayload () {
 VueAuthenticate.prototype.login = function login (user, requestOptions) {
     var this$1 = this;
 
-  requestOptions = requestOptions || {};
+  requestOptions = requestOptions || {};
   requestOptions.url = requestOptions.url ? requestOptions.url : joinUrl(this.options.baseUrl, this.options.loginUrl);
   requestOptions[this.options.requestDataKey] = user || requestOptions[this.options.requestDataKey];
   requestOptions.method = requestOptions.method || 'POST';
@@ -1355,7 +1351,7 @@ VueAuthenticate.prototype.login = function login (user, requestOptions) {
 VueAuthenticate.prototype.register = function register (user, requestOptions) {
     var this$1 = this;
 
-  requestOptions = requestOptions || {};
+  requestOptions = requestOptions || {};
   requestOptions.url = requestOptions.url ? requestOptions.url : joinUrl(this.options.baseUrl, this.options.registerUrl);
   requestOptions[this.options.requestDataKey] = user || requestOptions[this.options.requestDataKey];
   requestOptions.method = requestOptions.method || 'POST';
@@ -1398,7 +1394,7 @@ VueAuthenticate.prototype.logout = function logout (requestOptions) {
 
 /**
  * Authenticate user using authentication provider
- * 
+ *
  * @param{String} provider     Provider name
  * @param{Object} userData     User data
  * @return {Promise}             Request promise
@@ -1437,12 +1433,12 @@ VueAuthenticate.prototype.authenticate = function authenticate (provider, userDa
 };
 
 /**
-* Link user using authentication provider without login
-*
-* @param{String} provider     Provider name
-* @param{Object} userData     User data
-* @return {Promise}             Request promise
-*/
+ * Link user using authentication provider without login
+ *
+ * @param{String} provider     Provider name
+ * @param{Object} userData     User data
+ * @return {Promise}             Request promise
+ */
 VueAuthenticate.prototype.link = function link (provider, userData) {
     var this$1 = this;
 
@@ -1480,21 +1476,17 @@ VueAuthenticate.prototype.link = function link (provider, userData) {
  * @param {Object} options
  */
 function plugin(Vue, options) {
-  if (plugin.installed) {
-    return
-  }
+  if (plugin.installed) { return }
   plugin.installed = true;
-
   var vueAuthInstance = null;
   Object.defineProperties(Vue.prototype, {
-    $auth: {
+    $oauth: {
       get: function get() {
         if (!vueAuthInstance) {
           // Request handler library not found, throw error
           if (!this.$http) {
             throw new Error('Request handler instance not found')
           }
-
           vueAuthInstance = new VueAuthenticate(this.$http, options);
         }
         return vueAuthInstance
@@ -1513,6 +1505,4 @@ plugin.factory = function ($http, options) {
   return new VueAuthenticate($http, options)
 };
 
-return plugin;
-
-})));
+module.exports = plugin;

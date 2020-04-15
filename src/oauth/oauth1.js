@@ -1,6 +1,6 @@
 import OAuthPopup from './popup.js'
 import { $window } from '../globals.js';
-import { objectExtend, isString, isObject, isFunction, joinUrl } from '../utils.js'
+import { joinUrl, objectExtend } from '../utils.js'
 
 const defaultProviderConfig = {
   name: null,
@@ -26,7 +26,7 @@ export default class OAuth {
   }
 
   /**
-   * Initialize OAuth1 process 
+   * Initialize OAuth1 process
    * @param  {Object} userData User data
    * @return {Promise}
    */
@@ -68,9 +68,7 @@ export default class OAuth {
    * @return {Promise}
    */
   openPopup(response) {
-    const url = [this.providerConfig.authorizationEndpoint, this.buildQueryString(response[this.options.responseDataKey])].join('?');
-
-    this.oauthPopup.popup.location = url
+    this.oauthPopup.popup.location = [this.providerConfig.authorizationEndpoint, this.buildQueryString(response[this.options.responseDataKey])].join('?')
     if ($window['cordova']) {
       return this.oauthPopup.open(this.providerConfig.redirectUri)
     } else {
@@ -101,7 +99,7 @@ export default class OAuth {
 
   buildQueryString(params) {
     const parsedParams = [];
-    for (var key in params) {
+    for (const key in params) {
       let value = params[key]
       parsedParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
     }
