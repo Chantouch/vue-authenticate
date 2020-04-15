@@ -18,7 +18,7 @@ rollup.rollup({
   return write('dist/vue-auth.js', bundle.generate({
     format: 'umd',
     banner: banner,
-    moduleName: 'VueAuthenticate'
+    moduleName: 'VueAuth'
   }).code, bundle);
 })
 .then(function (bundle) {
@@ -30,7 +30,7 @@ rollup.rollup({
   return write('dist/vue-auth.es2015.js', bundle.generate({
     format: 'es',
     banner: banner,
-    footer: 'export { VueAuthenticate };'
+    footer: 'export { VueAuth };'
   }).code, bundle);
 })
 .then(function (bundle) {

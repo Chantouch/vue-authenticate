@@ -7,7 +7,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global.VueAuthenticate = factory());
+	(global.VueAuth = factory());
 }(this, (function () { 'use strict';
 
 if (typeof Object.assign != 'function') {
