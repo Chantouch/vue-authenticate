@@ -11,7 +11,7 @@ var oauthSignature = require('oauth-signature')
 var app = express()
 app.use(cors())
 app.use(bodyParser.json())
-// app.use(allowCrossDomain);
+app.use(allowCrossDomain)
 
 app.get('/', function (req, res) {
   res.send('vue-auths')

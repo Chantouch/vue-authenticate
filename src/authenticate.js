@@ -2,8 +2,6 @@ import Promise from './promise.js'
 import { $window } from './globals.js';
 import {
   objectExtend,
-  isString,
-  isObject,
   isFunction,
   joinUrl,
   decodeBase64,
@@ -60,7 +58,7 @@ export default class VueAuth {
 
   /**
    * Check if user is authenticated
-   * @author Sek Chantouch <https://github.com/Chnatouch>
+   * @author Sek Chantouch <https://github.com/Chantouch>
    * @copyright Method taken from https://github.com/Chantouch/satellizer
    * @return {Boolean}
    */

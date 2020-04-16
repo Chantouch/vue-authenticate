@@ -1,25 +1,29 @@
 axios.defaults.baseURL = 'http://localhost:4000';
 
 Vue.use(VueRouter)
-Vue.use(VueAuthenticate, {
+Vue.use(VueAuth, {
   tokenName: 'access_token',
   baseUrl: 'http://localhost:4000',
   storageType: 'cookieStorage',
   providers: {
-    // Define OAuth providers config
+    twitter: {
+      clientId: 'UGhQBsrl1cSHhoL8w07DUWQZr',
+      clientSecret: 'WlpfB92MpyR6F0pP2h9dWEHYLgDUBgF6GoAtTOp7IakOqaZSFO',
+      redirectUri: 'http://localhost:8080/auth/callback'
+    }
   }
 })
 
 var router = new VueRouter({
   mode: 'history',
   routes: [
-    { 
+    {
       path: '/',
       name: 'index',
       component: {
         data: function () {
           return {
-            isAuthenticated: this.$auth.isAuthenticated(),
+            isAuthenticated: this.$oauth.isAuthenticated(),
             access_token: null,
             response: null
           }
@@ -28,13 +32,13 @@ var router = new VueRouter({
           <div class="index-component">
             <div class="authentication-status" v-if="isAuthenticated">
               You are successfully authenticated
-              <div class="authentication-status__token">{{$auth.getToken()}}</div>
+              <div class="authentication-status__token">{{$oauth.getToken()}}</div>
             </div>
 
             <button @click="authLogin()">Login</button>
             <button @click="authRegister()">Register</button>
             <button @click="authLogout()">Logout</button>
-            
+
             <hr />
 
             <button @click="auth('github')" class="button--github">Auth github</button>
@@ -43,7 +47,7 @@ var router = new VueRouter({
             <button @click="auth('twitter')" class="button--twitter">Auth twitter</button>
 
             <hr />
-            
+
             <button @click="auth('instagram')" class="button--instagram">Auth instagram</button>
             <button @click="auth('bitbucket')" class="button--bitbucket">Auth bitbucket</button>
             <button @click="auth('linkedin')" class="button--linkedin">Auth LinkedIn</button>
@@ -57,16 +61,16 @@ var router = new VueRouter({
           authLogin: function () {
             var this_ = this;
             let user = {
-              email: 'john.doe@domain.com', 
+              email: 'john.doe@domain.com',
               password: 'pass123456'
             };
 
-            if (this.$auth.isAuthenticated()) {
-              this.$auth.logout()
+            if (this.$oauth.isAuthenticated()) {
+              this.$oauth.logout()
             }
 
-            this.$auth.login(user).then(function (response) {
-              this_.isAuthenticated = this_.$auth.isAuthenticated();
+            this.$oauth.login(user).then(function (response) {
+              this_.isAuthenticated = this_.$oauth.isAuthenticated();
               this_.response = response
             })
           },
@@ -75,49 +79,48 @@ var router = new VueRouter({
             var this_ = this;
             let user = {
               name: 'John Doe',
-              email: 'john.doe@domain.com', 
+              email: 'john.doe@domain.com',
               password: 'pass123456'
             };
 
-            if (this.$auth.isAuthenticated()) {
-              this.$auth.logout()  
+            if (this.$oauth.isAuthenticated()) {
+              this.$oauth.logout()
             }
-            
-            this.$auth.register(user).then(function (response) {
-              this_.isAuthenticated = this_.$auth.isAuthenticated();
+
+            this.$oauth.register(user).then(function (response) {
+              this_.isAuthenticated = this_.$oauth.isAuthenticated();
               this_.response = response
             })
           },
 
           authLogout: function () {
             var this_ = this;
-            this.$auth.logout().then(function () {
-              if (!this_.$auth.isAuthenticated()) {
+            this.$oauth.logout().then(function () {
+              if (!this_.$oauth.isAuthenticated()) {
                 this_.response = null
               }
 
-              this_.isAuthenticated = this_.$auth.isAuthenticated();
+              this_.isAuthenticated = this_.$oauth.isAuthenticated();
             })
           },
 
           auth: function(provider) {
-            if (this.$auth.isAuthenticated()) {
-              this.$auth.logout()
+            if (this.$oauth.isAuthenticated()) {
+              this.$oauth.logout()
             }
 
             this.response = null
 
             var this_ = this;
-            this.$auth.authenticate(provider).then(function (authResponse) {
-              this_.isAuthenticated = this_.$auth.isAuthenticated();
-
+            this.$oauth.authenticate(provider).then(function ({ data }) {
+              this_.isAuthenticated = this_.$oauth.isAuthenticated();
               if (provider === 'github') {
                 this_.$http.get('https://api.github.com/user').then(function (response) {
                   this_.response = response
                 })
               } else if (provider === 'facebook') {
                 this_.$http.get('https://graph.facebook.com/v2.5/me', {
-                  params: { access_token: this_.$auth.getToken() }
+                  params: { access_token: this_.$oauth.getToken() }
                 }).then(function (response) {
                   this_.response = response
                 })
@@ -126,25 +129,25 @@ var router = new VueRouter({
                   this_.response = response
                 })
               } else if (provider === 'twitter') {
-                this_.response = authResponse.body.profile
+                this_.response = data.profile
               } else if (provider === 'instagram') {
-                this_.response = authResponse
+                this_.response = data
               } else if (provider === 'bitbucket') {
                 this_.$http.get('https://api.bitbucket.org/2.0/user').then(function (response) {
                   this_.response = response
                 })
               } else if (provider === 'linkedin') {
-                this_.response = authResponse
+                this_.response = data
               } else if (provider === 'live') {
-                this_.response = authResponse
+                this_.response = data
               }
             }).catch(function (err) {
-              this_.isAuthenticated = this_.$auth.isAuthenticated()
+              this_.isAuthenticated = this_.$oauth.isAuthenticated()
               this_.response = err
             })
           }
         }
-      } 
+      }
     },
 
     {
